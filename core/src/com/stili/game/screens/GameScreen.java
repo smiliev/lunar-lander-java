@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.stili.game.maps.LunarSurfaceMap;
 
 import static com.stili.game.Constants.PPM;
 
@@ -17,22 +18,26 @@ public class GameScreen extends ScreenAdapter {
     private final SpriteBatch batch;
     private final World world;
     private final Box2DDebugRenderer box2DDebugRenderer;
+    private final LunarSurfaceMap map;
 
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
         this.batch = new SpriteBatch();
         this.world = new World(new Vector2(0,0),  false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
-
+        this.map = new LunarSurfaceMap("map.json");
 
     }
 
     @Override
     public void render(float delta) {
+        camera.zoom = 0.4f;
         update();
 
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        map.render(camera);
 
         batch.begin();
 
@@ -41,6 +46,13 @@ public class GameScreen extends ScreenAdapter {
         batch.end();
 
         box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        map.dispose();
     }
 
     private void update() {
@@ -52,6 +64,14 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void cameraUpdate() {
-        camera.position.set(new Vector3(0,0,0));
+        camera.position.set(new Vector3(360,480,0));
+        camera.update();
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
+        camera.update();
     }
 }
