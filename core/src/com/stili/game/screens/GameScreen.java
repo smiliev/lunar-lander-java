@@ -19,6 +19,7 @@ public class GameScreen extends ScreenAdapter {
     private final World world;
     private final Box2DDebugRenderer box2DDebugRenderer;
     private final LunarSurfaceMap map;
+    private float camX = 0;
 
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
@@ -31,7 +32,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        camera.zoom = 0.4f;
+        camera.zoom = 1f;
         update();
 
         Gdx.gl.glClearColor(0,0,0,1);
@@ -64,7 +65,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void cameraUpdate() {
-        camera.position.set(new Vector3(360,480,0));
+        camera.position.set(new Vector3(camX+=5,0,0));
         camera.update();
     }
 

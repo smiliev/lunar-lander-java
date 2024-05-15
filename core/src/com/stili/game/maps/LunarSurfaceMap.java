@@ -16,7 +16,6 @@ public class LunarSurfaceMap {
 
     public LunarSurfaceMap (String map) {
         this.points = loadMapPoints(map);
-
         this.renderer = new ShapeRenderer(points.size);
 
 //        renderer.setAutoShapeType(true);
