@@ -20,6 +20,7 @@ public class LunarLanderGame extends Game {
 
         OrthographicCamera orthographicCamera = new OrthographicCamera();
 		orthographicCamera.setToOrtho(false, screenWidth, screenHeight);
+		orthographicCamera.position.set(400, 0, 0);
 
 		setScreen(new GameScreen(orthographicCamera));
 

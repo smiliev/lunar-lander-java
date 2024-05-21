@@ -5,18 +5,14 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
 import com.stili.game.maps.LunarSurfaceMap;
-
-import static com.stili.game.Constants.PPM;
 
 public class GameScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
-    private final World world;
+//    private final World world;
     private final Box2DDebugRenderer box2DDebugRenderer;
     private final LunarSurfaceMap map;
     private float camX = 0;
@@ -24,7 +20,7 @@ public class GameScreen extends ScreenAdapter {
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
         this.batch = new SpriteBatch();
-        this.world = new World(new Vector2(0,0),  false);
+//        this.world = new World(new Vector2(0,0),  false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.map = new LunarSurfaceMap("map.json");
 
@@ -32,7 +28,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        camera.zoom = 1f;
+        camera.zoom = 2f;
         update();
 
         Gdx.gl.glClearColor(0,0,0,1);
@@ -46,7 +42,7 @@ public class GameScreen extends ScreenAdapter {
 
         batch.end();
 
-        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
+//        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
 
     @Override
@@ -57,7 +53,7 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void update() {
-        world.step(1/60f, 6, 2);
+//        world.step(1/60f, 6, 2);
 
         cameraUpdate();
 
@@ -65,7 +61,8 @@ public class GameScreen extends ScreenAdapter {
     }
 
     private void cameraUpdate() {
-        camera.position.set(new Vector3(camX+=5,0,0));
+        camera.position.set(new Vector3(camera.position.x += 3,0,0));
+//        camera.position.set(new Vector3(0,0,0));
         camera.update();
     }
 
@@ -76,3 +73,4 @@ public class GameScreen extends ScreenAdapter {
         camera.update();
     }
 }
+
