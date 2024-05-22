@@ -28,7 +28,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        camera.zoom = 2f;
+        camera.zoom = 1f;
         update();
 
         Gdx.gl.glClearColor(0,0,0,1);

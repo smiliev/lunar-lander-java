@@ -27,15 +27,16 @@ public class LunarSurfaceMap {
 //        renderer.begin(ShapeRenderer.ShapeType.Filled);
         float offset = 0;
 
-        float viewLeft = camera.position.x - (camera.viewportWidth / 2);
-        float viewRight = viewLeft + camera.viewportWidth;
+//        float viewLeft = (camera.position.x - (camera.viewportWidth / 2) * camera.zoom) -20;
+//        float viewRight = viewLeft + camera.viewportWidth;
+        float viewLeft = camera.position.x / camera.view.getScaleX() - (camera.viewportWidth / 2);
+        float viewRight = viewLeft + (camera.viewportWidth * camera.view.getScaleX());
 
         while (viewLeft - offset > mapWidth) {
             offset += mapWidth;
         }
-        System.out.println(offset);
 
-        while (viewLeft - offset < 0) {
+        while (viewLeft-offset < 0) {
             offset -= mapWidth;
         }
 
@@ -49,7 +50,8 @@ public class LunarSurfaceMap {
 
             while (line.getP1().x + offset < viewRight) {
 
-                renderer.rectLine(line.getP1().x + offset, line.getP1().y, line.getP2().x + offset, line.getP2().y, 2);
+                if (line.getP2().x + offset > viewLeft)
+                    renderer.rectLine(line.getP1().x + offset, line.getP1().y, line.getP2().x + offset, line.getP2().y, 2);
 
                 i++;
                 if (i >= lines.size) {
@@ -61,6 +63,9 @@ public class LunarSurfaceMap {
             }
         }
 
+//        System.out.println(viewLeft);
+//        System.out.println(viewRight);
+        System.out.println(offset);
 
         renderer.end();
     }
