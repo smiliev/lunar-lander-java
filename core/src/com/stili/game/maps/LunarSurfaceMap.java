@@ -7,8 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 public class LunarSurfaceMap {
-    private Array<Vector2> points;
-    private Array<LandscapeLine> lines;
+    private final Array<Vector2> points;
+    private final Array<LandscapeLine> lines;
     private final ShapeRenderer renderer;
     private final float mapWidth;
 
@@ -24,11 +24,9 @@ public class LunarSurfaceMap {
 
     public void render(OrthographicCamera camera) {
         renderer.setProjectionMatrix(camera.combined);
-//        renderer.begin(ShapeRenderer.ShapeType.Filled);
         float offset = 0;
 
-//        float viewLeft = (camera.position.x - (camera.viewportWidth / 2) * camera.zoom) -20;
-//        float viewRight = viewLeft + camera.viewportWidth;
+        //todo: check if i have to use the scale on the whole thing (ex. try with zoom)
         float viewLeft = camera.position.x / camera.view.getScaleX() - (camera.viewportWidth / 2);
         float viewRight = viewLeft + (camera.viewportWidth * camera.view.getScaleX());
 
@@ -36,7 +34,7 @@ public class LunarSurfaceMap {
             offset += mapWidth;
         }
 
-        while (viewLeft-offset < 0) {
+        while (viewLeft - offset < 0) {
             offset -= mapWidth;
         }
 
@@ -45,6 +43,7 @@ public class LunarSurfaceMap {
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.WHITE);
 
+        //todo: use variables you filthy barbarian
         if (!lines.isEmpty()) {
             LandscapeLine line = lines.get(i);
 
@@ -63,13 +62,10 @@ public class LunarSurfaceMap {
             }
         }
 
-//        System.out.println(viewLeft);
-//        System.out.println(viewRight);
-        System.out.println(offset);
-
         renderer.end();
     }
 
+    //todo: flip and save into json
     private void loadMap(String map) {
         points.add(new Vector2(0.5f, 355.55f));
         points.add(new Vector2(5.45f, 355.55f));
@@ -237,55 +233,6 @@ public class LunarSurfaceMap {
             prev = point;
         }
     }
-
-//    private void loadMap(String fileName) {
-//        FileHandle fileHandle = Gdx.files.internal(fileName);
-//        Vector2 prevPoint = null;
-//        Vector2 point;
-//
-//        if (fileHandle.exists()) {
-//            JsonValue root = new JsonReader().parse(fileHandle);
-//            if (root != null && root.isArray()) {
-//                for (JsonValue value : root) {
-//                    float x = value.getFloat("x", 0);
-//                    float y = value.getFloat("y", 0);
-//                    point = new Vector2(x, y);
-//
-//                    this.points.add(point);
-//
-//                    if (prevPoint != null) {
-//                        this.lines.add(new LandscapeLine(prevPoint, point));
-//                    }
-//
-//                    prevPoint = point;
-//
-//                }
-//            } else {
-//                Gdx.app.error("LunarSurfaceService", "Failed to parse map data.");
-//            }
-//        } else {
-//            Gdx.app.error("LunarSurfaceService", "Map file not found: " + fileName);
-//        }
-//    }
-
-//    public void render(OrthographicCamera camera) {
-//        renderer.setProjectionMatrix(camera.combined);
-//        renderer.begin(ShapeRenderer.ShapeType.Filled);
-//        renderer.setColor(Color.WHITE);
-//
-//
-//
-//        for (int i = 0; i < points.size - 1; i++) {
-//
-//            Vector2 p1 = points.get(i);
-//            Vector2 p2 = points.get(i + 1);
-//
-//            renderer.rectLine(p1, p2, 2);
-//            renderer.circle(p1.x, p1.y, 1);
-//        }
-//
-//        renderer.end();
-//    }
 
     public void dispose() {
         renderer.dispose();
