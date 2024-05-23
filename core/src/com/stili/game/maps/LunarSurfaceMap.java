@@ -26,9 +26,10 @@ public class LunarSurfaceMap {
         renderer.setProjectionMatrix(camera.combined);
         float offset = 0;
 
-        //todo: check if i have to use the scale on the whole thing (ex. try with zoom)
-        float viewLeft = camera.position.x / camera.view.getScaleX() - (camera.viewportWidth / 2);
-        float viewRight = viewLeft + (camera.viewportWidth * camera.view.getScaleX());
+        float halfViewportWidth = (camera.viewportWidth * camera.zoom) / 2;
+
+        float viewLeft = camera.position.x - halfViewportWidth;
+        float viewRight = camera.position.x + halfViewportWidth;
 
         while (viewLeft - offset > mapWidth) {
             offset += mapWidth;
