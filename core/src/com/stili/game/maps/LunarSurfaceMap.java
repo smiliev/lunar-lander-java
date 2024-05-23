@@ -22,14 +22,24 @@ public class LunarSurfaceMap {
 //        renderer.setAutoShapeType(true);
     }
 
+    //todo: start thinking vertically
     public void render(OrthographicCamera camera) {
         renderer.setProjectionMatrix(camera.combined);
-        float offset = 0;
 
         float halfViewportWidth = (camera.viewportWidth * camera.zoom) / 2;
-
         float viewLeft = camera.position.x - halfViewportWidth;
         float viewRight = camera.position.x + halfViewportWidth;
+
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+        renderer.setColor(Color.WHITE);
+
+        renderLandscape(viewLeft, viewRight);
+
+        renderer.end();
+    }
+
+    private void renderLandscape(float viewLeft, float viewRight) {
+        float offset = 0;
 
         while (viewLeft - offset > mapWidth) {
             offset += mapWidth;
@@ -39,19 +49,22 @@ public class LunarSurfaceMap {
             offset -= mapWidth;
         }
 
-        int i = 0;
-
-        renderer.begin(ShapeRenderer.ShapeType.Filled);
-        renderer.setColor(Color.WHITE);
-
-        //todo: use variables you filthy barbarian
         if (!lines.isEmpty()) {
+            int i = 0;
+            float p1x, p2x;
             LandscapeLine line = lines.get(i);
 
-            while (line.getP1().x + offset < viewRight) {
+            while (true) {
+                p1x = line.getP1().x + offset;
+                p2x = line.getP2().x + offset;
 
-                if (line.getP2().x + offset > viewLeft)
-                    renderer.rectLine(line.getP1().x + offset, line.getP1().y, line.getP2().x + offset, line.getP2().y, 2);
+                if (p1x >= viewRight) {
+                    break;
+                }
+
+                if (p2x > viewLeft) {
+                    renderer.rectLine(p1x, line.getP1().y, p2x, line.getP2().y, 2);
+                }
 
                 i++;
                 if (i >= lines.size) {
@@ -62,8 +75,6 @@ public class LunarSurfaceMap {
                 line = lines.get(i);
             }
         }
-
-        renderer.end();
     }
 
     //todo: flip and save into json
