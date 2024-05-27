@@ -7,22 +7,21 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.stili.game.maps.LunarSurfaceMap;
+import com.stili.game.maps.LunarLandscape;
 
 public class GameScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
     private final SpriteBatch batch;
 //    private final World world;
     private final Box2DDebugRenderer box2DDebugRenderer;
-    private final LunarSurfaceMap map;
-    private float camX = 0;
+    private final LunarLandscape landscape;
 
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
         this.batch = new SpriteBatch();
 //        this.world = new World(new Vector2(0,0),  false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
-        this.map = new LunarSurfaceMap("map.json");
+        this.landscape = new LunarLandscape("map_v2.json");
 
     }
 
@@ -34,7 +33,7 @@ public class GameScreen extends ScreenAdapter {
         Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        map.render(camera);
+        landscape.render(camera);
 
         batch.begin();
 
@@ -49,7 +48,7 @@ public class GameScreen extends ScreenAdapter {
     public void dispose() {
         super.dispose();
 
-        map.dispose();
+        landscape.dispose();
     }
 
     private void update() {

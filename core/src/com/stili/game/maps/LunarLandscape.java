@@ -10,13 +10,17 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
-public class LunarSurfaceMap {
+import static com.stili.game.Constants.PPM;
+
+public class LunarLandscape {
     private final Array<Vector2> points;
     private final Array<LandscapeLine> lines;
     private final ShapeRenderer renderer;
     private final float mapWidth;
+    private float lowestAltitude = Float.MAX_VALUE;
+    private float highestAltitude = Float.MIN_VALUE;
 
-    public LunarSurfaceMap (String map) {
+    public LunarLandscape(String map) {
         this.points = new Array<>();
         this.lines = new Array<>();
         loadMap(map);
@@ -35,8 +39,8 @@ public class LunarSurfaceMap {
             JsonValue root = new JsonReader().parse(fileHandle);
             if (root != null && root.isArray()) {
                 for (JsonValue value : root) {
-                    float x = value.getFloat("x", 0);
-                    float y = value.getFloat("y", 0);
+                    float x = value.getFloat("x", 0) * PPM;
+                    float y = value.getFloat("y", 0) * PPM;
                     point = new Vector2(x, y);
 
                     this.points.add(point);
@@ -45,8 +49,14 @@ public class LunarSurfaceMap {
                         this.lines.add(new LandscapeLine(prevPoint, point));
                     }
 
-                    prevPoint = point;
+                    if (point.y > highestAltitude) {
+                        highestAltitude = point.y;
+                    }
+                    if (point.y < lowestAltitude) {
+                        lowestAltitude = point.y;
+                    }
 
+                    prevPoint = point;
                 }
             } else {
                 Gdx.app.error("LunarSurfaceService", "Failed to parse map data.");
@@ -56,7 +66,7 @@ public class LunarSurfaceMap {
         }
     }
 
-    //todo: start thinking vertically
+    //todo: start thinking vertically:: maybe just a camera thing:: change of resolution = change of zoom
     public void render(OrthographicCamera camera) {
         renderer.setProjectionMatrix(camera.combined);
 
@@ -68,6 +78,11 @@ public class LunarSurfaceMap {
         renderer.setColor(Color.WHITE);
 
         renderLandscape(viewLeft, viewRight);
+        renderer.rectLine(camera.position.x, camera.position.y, camera.position.x + (20 * PPM), camera.position.y, PPM);
+
+        // Calculate the height of the plane using proportions
+
+
 
         renderer.end();
     }
@@ -97,7 +112,8 @@ public class LunarSurfaceMap {
                 }
 
                 if (p2x > viewLeft) {
-                    renderer.rectLine(p1x, line.getP1().y, p2x, line.getP2().y, 2);
+                    renderer.rectLine(p1x, line.getP1().y, p2x, line.getP2().y, PPM * 2);
+                    renderer.circle(p2x, line.getP2().y, PPM);
                 }
 
                 i++;
@@ -113,5 +129,13 @@ public class LunarSurfaceMap {
 
     public void dispose() {
         renderer.dispose();
+    }
+
+    public float getHighestAltitude() {
+        return highestAltitude;
+    }
+
+    public float getLowestAltitude() {
+        return lowestAltitude;
     }
 }
