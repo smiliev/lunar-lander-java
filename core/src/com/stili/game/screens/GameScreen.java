@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stili.game.helper.map.LanderInputHandler;
 import com.stili.game.landers.LunarLander;
 import com.stili.game.maps.LunarLandscape;
@@ -17,7 +19,7 @@ public class GameScreen extends ScreenAdapter {
     private final Box2DDebugRenderer box2DDebugRenderer;
     private final LunarLandscape landscape;
     private final LunarLander lander;
-//    private final Viewport viewport;
+    private final Viewport viewport;
 
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
@@ -29,14 +31,15 @@ public class GameScreen extends ScreenAdapter {
 
         Gdx.input.setInputProcessor(new LanderInputHandler(lander));
 
-//        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+        viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
 //        viewport.update(800, 600);
-//        viewport.apply();
+        viewport.apply();
+
     }
 
     @Override
     public void render(float delta) {
-        camera.zoom = 1f;
+        camera.zoom = 3f;
         update();
 
         Gdx.gl.glClearColor(0,0,0,1);
@@ -78,7 +81,7 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void resize(int width, int height) {
-//        viewport.update(width, height);
+        viewport.update(width, height);
         camera.position.set(0, 0, 0);
         camera.update();
     }
