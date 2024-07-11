@@ -24,10 +24,9 @@ public class LunarLandscape {
         this.points = new Array<>();
         this.lines = new Array<>();
         loadMap(map);
+
         this.mapWidth = points.get(points.size - 1).x - points.get(0).x;
         this.renderer = new ShapeRenderer();
-
-//        renderer.setAutoShapeType(true);
     }
 
     private void loadMap(String fileName) {
@@ -78,11 +77,6 @@ public class LunarLandscape {
         renderer.setColor(Color.WHITE);
 
         renderLandscape(viewLeft, viewRight);
-        renderer.rectLine(camera.position.x, camera.position.y, camera.position.x + (20 * PPM), camera.position.y, PPM);
-
-        // Calculate the height of the plane using proportions
-
-
 
         renderer.end();
     }
@@ -112,8 +106,8 @@ public class LunarLandscape {
                 }
 
                 if (p2x > viewLeft) {
-                    renderer.rectLine(p1x, line.getP1().y, p2x, line.getP2().y, PPM * 2);
-                    renderer.circle(p2x, line.getP2().y, PPM);
+                    renderer.rectLine(p1x, line.getP1().y, p2x, line.getP2().y, PPM);
+                    renderer.circle(p2x, line.getP2().y, PPM / 2);
                 }
 
                 i++;

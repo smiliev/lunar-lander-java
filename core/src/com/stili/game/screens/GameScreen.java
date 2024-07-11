@@ -4,42 +4,53 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.stili.game.helper.map.LanderInputHandler;
+import com.stili.game.landers.LunarLander;
 import com.stili.game.maps.LunarLandscape;
 
 public class GameScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
-    private final SpriteBatch batch;
+//    private final SpriteBatch batch;
 //    private final World world;
     private final Box2DDebugRenderer box2DDebugRenderer;
     private final LunarLandscape landscape;
+    private final LunarLander lander;
+//    private final Viewport viewport;
 
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
-        this.batch = new SpriteBatch();
+//        this.batch = new SpriteBatch();
 //        this.world = new World(new Vector2(0,0),  false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
-        this.landscape = new LunarLandscape("map_v2.json");
+        this.landscape = new LunarLandscape("map.json");
+        this.lander = new LunarLander(landscape);
 
+        Gdx.input.setInputProcessor(new LanderInputHandler(lander));
+
+//        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+//        viewport.update(800, 600);
+//        viewport.apply();
     }
 
     @Override
     public void render(float delta) {
-        camera.zoom = 2f;
+        camera.zoom = 1f;
         update();
 
         Gdx.gl.glClearColor(0,0,0,1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
 
         landscape.render(camera);
+        lander.render(camera);
 
-        batch.begin();
+//        batch.begin();
 
-        //render objectsdf
 
-        batch.end();
+
+//        batch.end();
 
 //        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
@@ -56,19 +67,19 @@ public class GameScreen extends ScreenAdapter {
 
         cameraUpdate();
 
-        batch.setProjectionMatrix(camera.combined);
+//        batch.setProjectionMatrix(camera.combined);
     }
 
     private void cameraUpdate() {
-        camera.position.set(new Vector3(camera.position.x += 3,150,0));
-//        camera.position.set(new Vector3(0,0,0));
+//        camera.position.set(new Vector3(camera.position.x += 3,150,0));
+        camera.position.set(new Vector3(lander.getPosition().x,lander.getPosition().y, 0));
         camera.update();
     }
 
     @Override
     public void resize(int width, int height) {
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
+//        viewport.update(width, height);
+        camera.position.set(0, 0, 0);
         camera.update();
     }
 }
