@@ -14,7 +14,6 @@ import com.stili.game.maps.LunarLandscape;
 
 public class GameScreen extends ScreenAdapter {
     private final OrthographicCamera camera;
-//    private final SpriteBatch batch;
 //    private final World world;
     private final Box2DDebugRenderer box2DDebugRenderer;
     private final LunarLandscape landscape;
@@ -23,7 +22,6 @@ public class GameScreen extends ScreenAdapter {
 
     public GameScreen(OrthographicCamera camera) {
         this.camera = camera;
-//        this.batch = new SpriteBatch();
 //        this.world = new World(new Vector2(0,0),  false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.landscape = new LunarLandscape("map.json");
@@ -39,21 +37,15 @@ public class GameScreen extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        camera.zoom = 3f;
+        camera.zoom = 0.5f;
         update();
 
         Gdx.gl.glClearColor(0,0,0,1);
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
 
         landscape.render(camera);
         lander.render(camera);
-
-//        batch.begin();
-
-
-
-//        batch.end();
 
 //        box2DDebugRenderer.render(world, camera.combined.scl(PPM));
     }
@@ -69,8 +61,6 @@ public class GameScreen extends ScreenAdapter {
 //        world.step(1/60f, 6, 2);
 
         cameraUpdate();
-
-//        batch.setProjectionMatrix(camera.combined);
     }
 
     private void cameraUpdate() {

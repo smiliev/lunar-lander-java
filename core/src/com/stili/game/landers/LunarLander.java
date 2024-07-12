@@ -1,82 +1,104 @@
 package com.stili.game.landers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.stili.game.maps.LunarLandscape;
 
-import static com.stili.game.Constants.LANDER_HEIGHT_RATIO;
+import static com.stili.game.Constants.*;
 
 public class LunarLander {
     private final ShapeRenderer renderer;
     private Vector2 position;
-    private boolean thrust;
+    private final float ASC_STAGE_RADIUS = 2 * PPM;
+    private final float PLATFORM_THICKNESS = 0.75f * PPM;
+    private final float LANDING_GEAR_LENGTH = 2f * PPM;
+    private boolean thrust = true;
 
     public LunarLander(LunarLandscape landscape) {
         float initialY = LANDER_HEIGHT_RATIO * (landscape.getHighestAltitude() - landscape.getLowestAltitude()) + landscape.getLowestAltitude();
-        this.position = new Vector2(0,0);
+        this.position = new Vector2(0,300);
         renderer = new ShapeRenderer();
 
 
     }
 
     public void render(OrthographicCamera camera) {
+        //TODO: seperate physics and rendering logic in different classes
+        //TODO: decide how should the final variables be (make "EagleLEM" which contains these properties)
         if (thrust) {
             position.x++;
         }
 
         renderer.setProjectionMatrix(camera.combined);
-        renderer.setAutoShapeType(true);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         renderer.setColor(Color.WHITE);
-//        float rad = camera.position.x + 9.5f / PPM;
-//        float dia = rad*2;
-//        float width = rad / 2;
-//        renderer.circle(camera.position.x, camera.position.y, rad);
-//        renderer.rectLine(camera.position.x - rad, camera.position.y - rad - (width / 2), camera.position.x + rad, camera.position.y - rad - (width / 2), width);
-//
-//
-//        renderer.end();
 
         float octagonCenterX = position.x;
-//        System.out.println(position.y);
         float octagonCenterY = position.y;
-        float octagonRadius = 9.5f;
-        drawOctagon(octagonCenterX, octagonCenterY, octagonRadius, camera);
 
-        float rectWidth = octagonRadius * 2;
-        float rectHeight = octagonRadius / 2;
-        float rectX = octagonCenterX - rectWidth / 2;
-        float rectY = octagonCenterY - octagonRadius - rectHeight;
+        drawModule(octagonCenterX, octagonCenterY);
 
-        drawRectangle(rectX, rectY, rectWidth, rectHeight);
+        float rectX = octagonCenterX - ASC_STAGE_RADIUS;
+        float rectY = octagonCenterY - ASC_STAGE_RADIUS + (LINE_THICKNESS / 4);
 
-//        this.position.x += 1;
+        drawPlatform(rectX, rectY, ASC_STAGE_RADIUS * 2);
+
+        drawLandingGears(rectX, rectY, ASC_STAGE_RADIUS * 2, LANDING_GEAR_LENGTH, 1);
 
         renderer.end();
     }
 
 
 
-    private void drawOctagon(float centerX, float centerY, float radius, OrthographicCamera camera) {
-        float dpiScalingFactor = Gdx.graphics.getDensity();
+    private void drawModule(float centerX, float centerY) {
         float angleStep = 360f / 8; // 45 degrees for each side
-        float startAngle = 22.5f;   // Start at 22.5 degrees to have flat sides at the top and bottom
+        float startAngle = 360f / 16; // Start at 22.5 degrees to have flat sides at the
         for (int i = 0; i < 8; i++) {
-            float x1 = centerX + radius * (float) Math.cos(Math.toRadians(startAngle + angleStep * i));
-            float y1 = centerY + radius * (float) Math.sin(Math.toRadians(startAngle + angleStep * i));
-            float x2 = centerX + radius * (float) Math.cos(Math.toRadians(startAngle + angleStep * (i + 1)));
-            float y2 = centerY + radius * (float) Math.sin(Math.toRadians(startAngle + angleStep * (i + 1)));
+            float angle = MathUtils.degreesToRadians * (startAngle + angleStep * i);
+            float x1 = centerX + ASC_STAGE_RADIUS * MathUtils.cos(angle);
+            float y1 = centerY + ASC_STAGE_RADIUS * MathUtils.sin(angle);
 
-            renderer.rectLine(x1, y1, x2, y2, 2);
-            renderer.circle(x2, y2, 1);
+            int nextIndex = (i + 1) % 8;
+            float x2 = centerX + ASC_STAGE_RADIUS * MathUtils.cos(MathUtils.degreesToRadians * (startAngle + angleStep * nextIndex));
+            float y2 = centerY + ASC_STAGE_RADIUS * MathUtils.sin(MathUtils.degreesToRadians * (startAngle + angleStep * nextIndex));
+
+            // Draw the octagon side
+            renderer.rectLine(x1, y1, x2, y2, LINE_THICKNESS);
+            renderer.circle(x2, y2, LINE_THICKNESS / 2);
         }
     }
 
-    private void drawRectangle(float x, float y, float width, float height) {
-        renderer.rect(x, y, width, height);
+    private void drawPlatform(float x, float y, float width) {
+        // Bottom side
+        renderer.rectLine(x, y, x + width, y, LINE_THICKNESS);
+        // Top side
+        renderer.rectLine(x, y - PLATFORM_THICKNESS, x + width, y - PLATFORM_THICKNESS, LINE_THICKNESS);
+        // Left side
+        renderer.rectLine(x, y, x, y - PLATFORM_THICKNESS, LINE_THICKNESS);
+        // Right side
+        renderer.rectLine(x + width, y, x + width, y - PLATFORM_THICKNESS, LINE_THICKNESS);
+    }
+    private void drawLandingGears(float x, float y, float width, float lineLength, float insetDistance) {
+        float angleRadians = MathUtils.degreesToRadians * 60;
+
+        // Bottom-left side line
+        float startX1 = x + insetDistance;
+        float startY1 = y - PLATFORM_THICKNESS;
+        float endX1 = startX1 - lineLength * MathUtils.cos(angleRadians);
+        float endY1 = startY1 - lineLength * MathUtils.sin(angleRadians);
+
+        // Bottom-right side line
+        float startX2 = x + width - insetDistance;
+        float startY2 = y - PLATFORM_THICKNESS;
+        float endX2 = startX2 + lineLength * MathUtils.cos(angleRadians);
+        float endY2 = startY2 - lineLength * MathUtils.sin(angleRadians);
+
+        // Draw the lines
+        renderer.rectLine(startX1, startY1, endX1, endY1, LINE_THICKNESS);
+        renderer.rectLine(startX2, startY2, endX2, endY2, LINE_THICKNESS);
     }
 
     public void thrust() {

@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
+import static com.stili.game.Constants.MAP_SCALE;
 import static com.stili.game.Constants.PPM;
 
 public class LunarLandscape {
@@ -42,7 +43,7 @@ public class LunarLandscape {
                     float y = value.getFloat("y", 0) * PPM;
                     point = new Vector2(x, y);
 
-                    this.points.add(point);
+                    this.points.add(point.scl(MAP_SCALE));
 
                     if (prevPoint != null) {
                         this.lines.add(new LandscapeLine(prevPoint, point));
