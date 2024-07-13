@@ -47,6 +47,8 @@ public class LunarLander {
         drawPlatform(rectX, rectY, ASC_STAGE_RADIUS * 2);
 
         drawLandingGears(rectX, rectY, ASC_STAGE_RADIUS * 2, LANDING_GEAR_LENGTH, 1);
+        drawEngine(rectX, rectY, ASC_STAGE_RADIUS * 2, 1.5f * PPM, 3);
+
 
         renderer.end();
     }
@@ -98,7 +100,32 @@ public class LunarLander {
 
         // Draw the lines
         renderer.rectLine(startX1, startY1, endX1, endY1, LINE_THICKNESS);
+        renderer.rectLine(endX1  - insetDistance, endY1, endX1 + insetDistance, endY1, LINE_THICKNESS);
         renderer.rectLine(startX2, startY2, endX2, endY2, LINE_THICKNESS);
+        renderer.rectLine(endX2  - insetDistance, endY2, endX2 + insetDistance, endY2, LINE_THICKNESS);
+    }
+
+    private void drawEngine(float x, float y, float width, float lineLength, float insetDistance) {
+        float angleRadians = MathUtils.degreesToRadians * 60;
+
+        // Bottom-left side line
+        float startX1 = x + insetDistance;
+        float startY1 = y - PLATFORM_THICKNESS;
+        float endX1 = startX1 - lineLength * MathUtils.cos(angleRadians);
+        float endY1 = startY1 - lineLength * MathUtils.sin(angleRadians);
+
+        // Bottom-right side line
+        float startX2 = x + width - insetDistance;
+        float startY2 = y - PLATFORM_THICKNESS;
+        float endX2 = startX2 + lineLength * MathUtils.cos(angleRadians);
+        float endY2 = startY2 - lineLength * MathUtils.sin(angleRadians);
+
+        // Draw the lines
+        renderer.rectLine(startX1, startY1, endX1, endY1, LINE_THICKNESS);
+        renderer.circle(endX1, endY1, LINE_THICKNESS/2);
+        renderer.rectLine(startX2, startY2, endX2, endY2, LINE_THICKNESS);
+        renderer.circle(endX2, endY2, LINE_THICKNESS/2);
+        renderer.rectLine(endX1, endY1, endX2, endY2, LINE_THICKNESS);
     }
 
     public void thrust() {
