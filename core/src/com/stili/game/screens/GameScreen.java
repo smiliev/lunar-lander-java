@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stili.game.helper.map.LanderInputHandler;
 import com.stili.game.landers.LunarLander;
+import com.stili.game.landers.LunarLanderEagle;
 import com.stili.game.maps.LunarLandscape;
 
 public class GameScreen extends ScreenAdapter {
@@ -25,7 +26,7 @@ public class GameScreen extends ScreenAdapter {
 //        this.world = new World(new Vector2(0,0),  false);
         this.box2DDebugRenderer = new Box2DDebugRenderer();
         this.landscape = new LunarLandscape("map.json");
-        this.lander = new LunarLander(landscape);
+        this.lander = new LunarLanderEagle(landscape);
 
         Gdx.input.setInputProcessor(new LanderInputHandler(lander));
 
