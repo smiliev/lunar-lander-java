@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 
 public class LunarLander {
-    protected LunarLanderRenderer renderer;
+    protected LunarModuleRenderer renderer;
     private Vector2 position;
     private boolean thrust = true;
 

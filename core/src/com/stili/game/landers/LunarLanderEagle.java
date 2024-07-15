@@ -9,12 +9,14 @@ public class LunarLanderEagle extends LunarLander {
     public final float ASC_STAGE_RADIUS = 2 * PPM;
     public final float PLATFORM_THICKNESS = 0.75f * PPM;
     public final float LANDING_GEAR_LENGTH = 2f * PPM;
+    public final float LANDING_PAD_RADIUS = 0.5f * PPM;
+    public final float LANDING_GEAR_INSET = 0.5f * PPM;
 
 
     public LunarLanderEagle(LunarLandscape landscape) {
         super();
         float initialY = LANDER_HEIGHT_RATIO * (landscape.getHighestAltitude() - landscape.getLowestAltitude()) + landscape.getLowestAltitude();
-        this.renderer = new LunarLanderRenderer(ASC_STAGE_RADIUS, PLATFORM_THICKNESS, LANDING_GEAR_LENGTH);
+        this.renderer = new LunarModuleRenderer(ASC_STAGE_RADIUS, PLATFORM_THICKNESS, LANDING_GEAR_LENGTH, LANDING_PAD_RADIUS, LANDING_GEAR_INSET);
 
     }
 }
