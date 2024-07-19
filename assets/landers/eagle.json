@@ -1,0 +1,18 @@
+{
+  "visualData": {
+    "ascendStageRadius": 2,
+    "descendStageWidth": 4,
+    "descendStageHeight": 0.75,
+    "landingGearLength": 2,
+    "landingPadRadius": 0.5,
+    "landingGearInset": 0.5
+  },
+  "physicsData": {
+    "mass": 1000,
+    "inertia": 200,
+    "fuelCapacity": 500,
+    "thrustForce": 3000,
+    "rotationSpeed": 1.0
+  }
+}
+

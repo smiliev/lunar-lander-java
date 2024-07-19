@@ -1,4 +1,4 @@
-package com.stili.game.maps;
+package com.stili.game.data.maps;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import static com.stili.game.Constants.MAP_SCALE;
 import static com.stili.game.Constants.PPM;
 
-public class LunarLandscape {
+public class Landscape {
     private final Array<Vector2> points;
     private final Array<LandscapeLine> lines;
     private final ShapeRenderer renderer;
@@ -21,7 +21,8 @@ public class LunarLandscape {
     private float lowestAltitude = Float.MAX_VALUE;
     private float highestAltitude = Float.MIN_VALUE;
 
-    public LunarLandscape(String map) {
+    public Landscape(String map) {
+        //TODO do mapdata class
         this.points = new Array<>();
         this.lines = new Array<>();
         loadMap(map);

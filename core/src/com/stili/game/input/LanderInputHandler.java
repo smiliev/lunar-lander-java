@@ -1,13 +1,13 @@
-package com.stili.game.helper.map;
+package com.stili.game.input;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.stili.game.landers.LunarLander;
+import com.stili.game.data.landers.Lander;
 
 public class LanderInputHandler extends InputAdapter {
-    private final LunarLander lander;
+    private final Lander lander;
 
-    public LanderInputHandler(LunarLander lander) {
+    public LanderInputHandler(Lander lander) {
         this.lander = lander;
     }
 

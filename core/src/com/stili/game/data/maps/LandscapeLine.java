@@ -1,4 +1,4 @@
-package com.stili.game.maps;
+package com.stili.game.data.maps;
 
 import com.badlogic.gdx.math.Vector2;
 
