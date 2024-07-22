@@ -5,7 +5,11 @@
     "descendStageHeight": 0.75,
     "landingGearLength": 2,
     "landingPadRadius": 0.5,
-    "landingGearInset": 0.5
+    "landingGearInset": 0.5,
+    "landingGearAngle": 60,
+    "engineHeight": 1.5,
+    "engineInset": 1.5,
+    "engineAngle": 60
   },
   "physicsData": {
     "mass": 1000,

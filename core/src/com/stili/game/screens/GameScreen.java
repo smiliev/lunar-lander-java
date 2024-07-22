@@ -26,7 +26,7 @@ public class GameScreen extends ScreenAdapter {
         this.box2DDebugRenderer = new Box2DDebugRenderer();
 
         //TODO read all maps from /maps and make menu to select which map to choose; same for lunar landers
-        this.landscape = new Landscape("./maps/map.json");
+        this.landscape = new Landscape();
         this.lander = new Lander();
 
 //        Gdx.input.setInputProcessor(new LanderInputHandler(lander));

@@ -44,6 +44,10 @@ public class LanderData implements Json.Serializable {
         private float landingGearLength;
         private float landingPadRadius;
         private float landingGearInset;
+        private float landingGearAngle;
+        private float engineHeight;
+        private float engineInset;
+        private float engineAngle;
 
         // Empty constructor for JSON deserialization
         public VisualData() {
@@ -73,6 +77,22 @@ public class LanderData implements Json.Serializable {
             return landingGearInset;
         }
 
+        public float getLandingGearAngle() {
+            return landingGearAngle;
+        }
+
+        public float getEngineHeight() {
+            return engineHeight;
+        }
+
+        public float getEngineInset() {
+            return engineInset;
+        }
+
+        public float getEngineAngle() {
+            return engineAngle;
+        }
+
         public void applyPPMScaling() {
             this.ascendStageRadius *= PPM;
             this.descendStageWidth *= PPM;
@@ -80,6 +100,10 @@ public class LanderData implements Json.Serializable {
             this.landingGearLength *= PPM;
             this.landingPadRadius *= PPM;
             this.landingGearInset *= PPM;
+            this.landingGearAngle *= 1;
+            this.engineHeight *= PPM;
+            this.engineInset *= PPM;
+            this.engineAngle *= 1;
         }
     }
 
