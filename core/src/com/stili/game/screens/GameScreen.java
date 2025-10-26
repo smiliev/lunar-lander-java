@@ -1,6 +1,7 @@
 package com.stili.game.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.stili.game.data.landers.Lander;
 import com.stili.game.data.maps.Landscape;
+import com.stili.game.input.DevInputHandler;
 import com.stili.game.input.LanderInputHandler;
 
 public class GameScreen extends ScreenAdapter {
@@ -25,10 +27,23 @@ public class GameScreen extends ScreenAdapter {
         this.landscape = new Landscape();
         this.lander = new Lander();
 
-        Gdx.input.setInputProcessor(new LanderInputHandler(lander));
+        // Setup input handling
+        setupInputHandlers();
 
         viewport = new ExtendViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
         viewport.apply();
+    }
+
+    private void setupInputHandlers() {
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        
+        // Dev mode input handler (always added to handle F3 toggle)
+        multiplexer.addProcessor(new DevInputHandler(camera));
+        
+        // Add lander input handler
+        multiplexer.addProcessor(new LanderInputHandler(lander));
+        
+        Gdx.input.setInputProcessor(multiplexer);
     }
 
     @Override
