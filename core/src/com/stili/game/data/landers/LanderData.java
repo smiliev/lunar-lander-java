@@ -33,10 +33,6 @@ public class LanderData implements Json.Serializable {
         physicsData = json.readValue(PhysicsData.class, jsonData.get("physicsData"));
     }
 
-    public void applyPPMScaling() {
-
-    }
-
     public static class VisualData {
         private float ascendStageRadius;
         private float descendStageWidth;

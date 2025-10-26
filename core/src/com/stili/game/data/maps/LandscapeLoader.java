@@ -21,15 +21,14 @@ public class LandscapeLoader {
 
         if (fileHandle.exists()) {
             Vector2 prevPoint = null;
-            Vector2 point;
             JsonValue root = new JsonReader().parse(fileHandle);
             if (root != null && root.isArray()) {
                 for (JsonValue value : root) {
-                    float x = value.getFloat("x", 0) * PPM;
-                    float y = value.getFloat("y", 0) * PPM;
-                    point = new Vector2(x, y);
+                    float x = value.getFloat("x", 0) * PPM * MAP_SCALE;
+                    float y = value.getFloat("y", 0) * PPM * MAP_SCALE;
+                    Vector2 point = new Vector2(x, y);
 
-                    points.add(point.scl(MAP_SCALE));
+                    points.add(point);
 
                     if (prevPoint != null) {
                         lines.add(new LandscapeLine(prevPoint, point));

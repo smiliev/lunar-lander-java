@@ -6,23 +6,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.stili.game.screens.GameScreen;
 
 public class LunarLanderGame extends Game {
-	private static LunarLanderGame instance;
-	private int screenWidth, screenHeight;
-
-    public LunarLanderGame() {
-		instance = this;
-	}
 	
 	@Override
 	public void create () {
-		this.screenWidth = Gdx.graphics.getWidth();
-		this.screenHeight = Gdx.graphics.getHeight();
+		int screenWidth = Gdx.graphics.getWidth();
+		int screenHeight = Gdx.graphics.getHeight();
 
         OrthographicCamera orthographicCamera = new OrthographicCamera();
 		orthographicCamera.setToOrtho(false, screenWidth, screenHeight);
-		orthographicCamera.position.set(400, 0, 0);
 
 		setScreen(new GameScreen(orthographicCamera));
-
 	}
 }
